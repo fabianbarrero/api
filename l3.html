@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soluciones L-3 Communications | API Soluciones</title>
+    <meta name="description" content="Catálogo completo de soluciones de seguridad L-3 Communications: Rayos X, Tomografía y Detección de Explosivos.">
+    
+    <!-- Fuentes y Estilos (Mismos que Index/Provision) -->
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ========================================= */
+        /* CSS "Pro-Tech Fusion" (Idéntico a Index)  */
+        /* ========================================= */
+        :root {
+            --brand-red: #e30613; --brand-red-dark: #b8050f;
+            --steel-dark: #1e293b; --steel-blue: #334155; --steel-light: #94a3b8;
+            --bg-body: #f8fafc; --bg-white: #ffffff;
+            --container-width: 1250px; --header-height: 80px;
+            --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; background-color: var(--bg-body); color: var(--steel-dark); line-height: 1.6; padding-top: var(--header-height); overflow-x: hidden; }
+        h1, h2, h3, h4, .btn, .nav-link { font-family: 'Rajdhani', sans-serif; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; } img { max-width: 100%; display: block; }
+        .container { max-width: var(--container-width); margin: 0 auto; padding: 0 20px; }
+
+        /* Componentes UI */
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 10px 25px; font-weight: 700; text-transform: uppercase; border-radius: 4px; cursor: pointer; transition: var(--transition); font-size: 0.9rem; }
+        .btn-primary { background-color: var(--brand-red); color: #fff; border: 1px solid var(--brand-red); }
+        .btn-primary:hover { background-color: var(--brand-red-dark); transform: translateY(-2px); }
+        .btn-outline { background: transparent; color: var(--steel-blue); border: 2px solid var(--steel-blue); }
+        .btn-outline:hover { border-color: var(--brand-red); color: var(--brand-red); }
+
+        /* Header */
+        .site-header { position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height); background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 1000; display: flex; align-items: center; }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .logo img { height: 55px; width: auto; object-fit: contain; }
+        .nav-list { display: none; gap: 2rem; align-items: center; }
+        .nav-link { font-weight: 600; color: var(--steel-blue); font-size: 1.1rem; text-transform: uppercase; padding: 5px 0; }
+        .nav-link:hover, .nav-link.active { color: var(--brand-red); }
+        .nav-toggle { display: flex; flex-direction: column; gap: 6px; cursor: pointer; background: none; border: none; padding: 10px; }
+        .nav-toggle span { width: 28px; height: 3px; background: var(--steel-dark); border-radius: 2px; }
+
+        /* Hero Interno */
+        .page-hero { position: relative; height: 350px; background: #000; display: flex; align-items: center; justify-content: center; text-align: center; color: #fff; overflow: hidden; }
+        .page-hero img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.5; }
+        .hero-content { position: relative; z-index: 2; max-width: 800px; padding: 0 20px; }
+        .hero-title { font-size: 3rem; text-transform: uppercase; margin-bottom: 10px; }
+        .hero-subtitle { font-size: 1.2rem; font-weight: 300; color: #cbd5e1; }
+
+        /* Layout Principal */
+        .main-layout { display: grid; grid-template-columns: 1fr; gap: 40px; padding: 60px 20px; }
+        
+        /* Sidebar */
+        .sidebar { background: #fff; border-radius: 8px; box-shadow: var(--shadow-soft); padding: 0; height: fit-content; position: sticky; top: 100px; border: 1px solid rgba(0,0,0,0.05); }
+        .sidebar-header { background: var(--steel-dark); color: #fff; padding: 20px; font-family: 'Rajdhani'; font-size: 1.3rem; font-weight: 700; text-transform: uppercase; }
+        .cat-btn { width: 100%; text-align: left; padding: 15px 25px; background: none; border: none; cursor: pointer; font-family: 'Rajdhani'; font-weight: 600; font-size: 1.1rem; color: var(--steel-blue); display: flex; justify-content: space-between; border-bottom: 1px solid #f1f5f9; transition: var(--transition); }
+        .cat-btn:hover { color: var(--brand-red); background: #f8fafc; }
+        .cat-btn.active { color: var(--brand-red); background: #fff5f5; border-left: 4px solid var(--brand-red); }
+        
+        /* Grid Productos */
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        .product-card { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-soft); transition: var(--transition); border: 1px solid transparent; display: flex; flex-direction: column; }
+        .product-card:hover { transform: translateY(-8px); border-color: rgba(227, 6, 19, 0.2); }
+        .card-img-wrap { height: 220px; padding: 30px; background: #fff; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #f1f5f9; position: relative; }
+        .card-img { max-height: 100%; width: auto; transition: transform 0.4s ease; }
+        .product-card:hover .card-img { transform: scale(1.1); }
+        .card-body { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-title { font-size: 1.4rem; color: var(--steel-dark); margin-bottom: 10px; font-weight: 700; }
+        .card-desc { font-size: 0.95rem; color: var(--steel-light); margin-bottom: 20px; flex-grow: 1; }
+        .card-action { margin-top: auto; padding-top: 15px; border-top: 1px solid #f1f5f9; }
+        .details-link { font-family: 'Rajdhani'; font-weight: 700; color: var(--brand-red); text-transform: uppercase; font-size: 0.9rem; display: flex; align-items: center; gap: 5px; }
+
+        /* Footer & Float */
+        .site-footer { background: var(--steel-dark); color: #fff; padding: 80px 0 30px; border-top: 5px solid var(--brand-red); margin-top: 60px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; }
+        .footer-col h4 { color: #fff; margin-bottom: 20px; border-left: 3px solid var(--brand-red); padding-left: 10px; }
+        .footer-col a { color: var(--steel-light); } .footer-col a:hover { color: var(--brand-red); }
+        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; color: var(--steel-light); }
+        .floating-actions { position: fixed; bottom: 30px; right: 30px; z-index: 2000; display: flex; flex-direction: column; gap: 15px; }
+        .float-btn { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.5rem; box-shadow: 0 5px 20px rgba(0,0,0,0.3); transition: transform 0.3s; }
+        .float-btn:hover { transform: scale(1.1); }
+        .btn-whatsapp { background: #25D366; } .btn-call { background: var(--brand-red); animation: pulse 2s infinite; }
+
+        @media (min-width: 992px) { .nav-list { display: flex; } .nav-toggle { display: none; } .main-layout { grid-template-columns: 280px 1fr; } }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(227, 6, 19, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(227, 6, 19, 0); } 100% { box-shadow: 0 0 0 0 rgba(227, 6, 19, 0); } }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo"><img src="img/logo-api.JPG" alt="API Soluciones"></a>
+            <nav>
+                <ul class="nav-list" id="nav-menu">
+                    <li><a href="index.html" class="nav-link">Inicio</a></li>
+                    <li><a href="nosotros.html" class="nav-link">Nosotros</a></li>
+                    <li><a href="l3.html" class="nav-link active">L-3 Solutions</a></li>
+                    <li><a href="cellcrypt.html" class="nav-link">Cellcrypt</a></li>
+                    <li><a href="contacto.html" class="btn btn-primary">Contacto</a></li>
+                </ul>
+            </nav>
+            <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <img src="https://images.unsplash.com/photo-1542296332-2e44a99cfef0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="L-3 Header">
+        <div class="hero-content">
+            <h1 class="hero-title">L-3 Communications</h1>
+            <p class="hero-subtitle">Tecnología líder mundial en detección de seguridad y sistemas de inspección.</p>
+        </div>
+    </section>
+
+    <!-- Contenido -->
+    <div class="container main-layout">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">Categorías</div>
+            <div class="sidebar-menu">
+                <button class="cat-btn active">Todos los Equipos <i class="fas fa-chevron-right"></i></button>
+                <button class="cat-btn">Línea Convencional <i class="fas fa-chevron-right"></i></button>
+                <button class="cat-btn">Línea Especializada <i class="fas fa-chevron-right"></i></button>
+                <button class="cat-btn">Línea Cargo <i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div style="padding: 20px;">
+                <div style="background:var(--steel-dark); padding:15px; border-radius:4px; color:#fff; text-align:center;">
+                    <h4 style="color:var(--brand-red); margin-bottom:5px;">¿Necesitas Asesoría?</h4>
+                    <p style="font-size:0.85rem; margin-bottom:10px;">Nuestros ingenieros te ayudan a elegir el equipo ideal.</p>
+                    <a href="contacto.html" class="btn btn-primary" style="width:100%; font-size:0.8rem;">Contactar</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Grid -->
+        <main>
+            <h2 style="font-size:2rem; margin-bottom:20px; color:var(--steel-dark);">Catálogo de <span style="color:var(--brand-red);">Productos</span></h2>
+            
+            <div class="products-grid">
+                
+                <!-- PRODUCTO: PROVISION (Enlazado) -->
+                <article class="product-card">
+                    <div class="card-img-wrap">
+                        <img src="img/producto-provision.jpg" alt="ProVision 2" class="card-img">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">ProVision 2</h3>
+                        <p class="card-desc">Escáner corporal de ondas milimétricas. Detección automática y privacidad garantizada.</p>
+                        <div class="card-action">
+                            <!-- ENLACE AL DETALLE -->
+                            <a href="provision.html" class="details-link">Ver Ficha Técnica <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Otros Productos (Placeholders) -->
+                <article class="product-card">
+                    <div class="card-img-wrap">
+                        <img src="img/producto-px64.jpg" alt="PX 6.4" class="card-img">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">PX 6.4</h3>
+                        <p class="card-desc">Sistema de rayos X para equipaje de mano con alta penetración y resolución.</p>
+                        <div class="card-action">
+                            <a href="#" class="details-link">Ver Ficha Técnica <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <div class="card-img-wrap">
+                        <img src="img/producto-3dx.jpg" alt="Examiner 3DX" class="card-img">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Examiner 3DX</h3>
+                        <p class="card-desc">Sistema EDS certificado TSA para equipaje facturado. Alta velocidad de procesamiento.</p>
+                        <div class="card-action">
+                            <a href="#" class="details-link">Ver Ficha Técnica <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <div class="card-img-wrap">
+                        <img src="img/producto-optex.jpg" alt="Optex" class="card-img">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Optex Trace</h3>
+                        <p class="card-desc">Detector de trazas de explosivos portátil. Resultados precisos en nanogramos.</p>
+                        <div class="card-action">
+                            <a href="#" class="details-link">Ver Ficha Técnica <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <div class="card-img-wrap">
+                        <img src="img/producto-acx64.jpg" alt="ACX 6.4" class="card-img">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">ACX 6.4</h3>
+                        <p class="card-desc">Inspección de puntos de control con detección automatizada de explosivos líquidos.</p>
+                        <div class="card-action">
+                            <a href="#" class="details-link">Ver Ficha Técnica <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <div class="card-img-wrap">
+                        <img src="img/producto-visrha.jpg" alt="VIS-RHA" class="card-img">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">VIS-RHA</h3>
+                        <p class="card-desc">Inspección de bajos de vehículos para detección de amenazas en accesos críticos.</p>
+                        <div class="card-action">
+                            <a href="#" class="details-link">Ver Ficha Técnica <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Actions & Footer -->
+    <div class="floating-actions">
+        <a href="https://wa.me/573001234567" target="_blank" class="float-btn btn-whatsapp"><i class="fab fa-whatsapp"></i></a>
+        <a href="tel:+5713001287" class="float-btn btn-call"><i class="fas fa-phone"></i></a>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <a href="#" style="font-family:'Rajdhani';font-size:2rem;font-weight:700;color:#fff;">API</a>
+                <p style="margin-top:15px;color:var(--steel-light);font-size:0.9rem;">Representantes exclusivos para Colombia de L-3 Communications.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Navegación</h4>
+                <ul><li><a href="index.html">Inicio</a></li><li><a href="nosotros.html">Nosotros</a></li><li><a href="l3.html">L-3</a></li><li><a href="cellcrypt.html">Cellcrypt</a></li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contacto</h4>
+                <ul style="color:var(--steel-light);font-size:0.9rem;">
+                    <li><i class="fas fa-map-marker-alt" style="color:var(--brand-red);"></i> Bogotá, Colombia</li>
+                    <li><i class="fas fa-phone" style="color:var(--brand-red);"></i> (57) 1-3001287</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom"><p>&copy; 2025 API Soluciones.</p></div>
+    </footer>
+
+    <script>
+        const navToggle = document.getElementById('nav-toggle'); const navMenu = document.getElementById('nav-menu');
+        navToggle.addEventListener('click', () => {
+            if (navMenu.style.display === 'flex') { navMenu.style.display = 'none'; } else {
+                navMenu.style.display = 'flex'; navMenu.style.flexDirection = 'column'; navMenu.style.position = 'absolute'; navMenu.style.top = '80px'; navMenu.style.left = '0'; navMenu.style.width = '100%'; navMenu.style.background = '#fff'; navMenu.style.padding = '20px'; navMenu.style.boxShadow = '0 10px 20px rgba(0,0,0,0.1)';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosotros - Perfil Corporativo | API Soluciones</title>
+    <meta name="description" content="Conozca a API Soluciones: líderes en seguridad aeroportuaria y representantes exclusivos de L-3 Communications en Colombia.">
+    
+    <!-- Fuentes y Estilos -->
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ========================================= */
+        /* CSS "Pro-Tech Fusion" (Sistema Global)    */
+        /* ========================================= */
+        :root {
+            --brand-red: #e30613; --brand-red-dark: #b8050f;
+            --steel-dark: #1e293b; --steel-blue: #334155; --steel-light: #94a3b8;
+            --bg-body: #f8fafc; --bg-white: #ffffff;
+            --container-width: 1250px; --header-height: 80px;
+            --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Roboto', sans-serif; 
+            background-color: var(--bg-body); 
+            color: var(--steel-dark); 
+            line-height: 1.8; 
+            padding-top: var(--header-height); 
+            overflow-x: hidden; 
+        }
+
+        h1, h2, h3, h4, .btn, .nav-link { font-family: 'Rajdhani', sans-serif; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        .container { max-width: var(--container-width); margin: 0 auto; padding: 0 20px; }
+
+        /* UI Kit */
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 10px 25px; font-weight: 700; text-transform: uppercase; border-radius: 4px; cursor: pointer; transition: var(--transition); font-size: 0.9rem; }
+        .btn-primary { background-color: var(--brand-red); color: #fff; border: 1px solid var(--brand-red); }
+        .btn-primary:hover { background-color: var(--brand-red-dark); transform: translateY(-2px); }
+
+        /* Header */
+        .site-header { position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height); background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 1000; display: flex; align-items: center; }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .logo img { height: 55px; width: auto; object-fit: contain; }
+        .nav-list { display: none; gap: 2rem; align-items: center; }
+        .nav-link { font-weight: 600; color: var(--steel-blue); font-size: 1.1rem; text-transform: uppercase; padding: 5px 0; }
+        .nav-link:hover, .nav-link.active { color: var(--brand-red); }
+        .nav-toggle { display: flex; flex-direction: column; gap: 6px; cursor: pointer; background: none; border: none; padding: 10px; }
+        .nav-toggle span { width: 28px; height: 3px; background: var(--steel-dark); border-radius: 2px; }
+
+        /* HERO NOSOTROS */
+        .about-hero {
+            position: relative;
+            height: 400px;
+            background: #1e293b;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; color: #fff;
+            overflow: hidden;
+        }
+        .about-hero img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; }
+        .hero-content { position: relative; z-index: 2; max-width: 800px; padding: 0 20px; }
+        .hero-title { font-size: 3.5rem; text-transform: uppercase; margin-bottom: 15px; }
+        .hero-subtitle { font-size: 1.3rem; font-weight: 300; color: #cbd5e1; }
+
+        /* LAYOUT CORPORATIVO */
+        .content-section { padding: 80px 0; }
+        
+        .history-grid { display: grid; grid-template-columns: 1fr; gap: 50px; }
+        
+        .text-block h2 { font-size: 2.5rem; color: var(--steel-dark); margin-bottom: 30px; border-left: 5px solid var(--brand-red); padding-left: 20px; line-height: 1.2; }
+        .text-block p { font-size: 1.1rem; color: var(--steel-blue); margin-bottom: 20px; }
+
+        /* Tarjetas Misión / Visión */
+        .mv-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; margin-top: 60px;
+        }
+        .mv-card {
+            background: #fff; padding: 40px; border-radius: 8px;
+            box-shadow: var(--shadow-soft); border-top: 5px solid var(--steel-dark);
+            transition: var(--transition);
+        }
+        .mv-card:hover { transform: translateY(-10px); border-top-color: var(--brand-red); }
+        .mv-icon { font-size: 2.5rem; color: var(--brand-red); margin-bottom: 20px; }
+        .mv-card h3 { font-size: 1.8rem; margin-bottom: 15px; color: var(--steel-dark); }
+        .mv-card p { color: var(--steel-light); font-size: 1rem; }
+
+        /* ALIADOS */
+        .allies-section { background: var(--steel-dark); color: #fff; padding: 80px 0; text-align: center; }
+        .allies-section h2 { font-size: 2.5rem; margin-bottom: 50px; text-transform: uppercase; }
+        
+        .logos-grid { 
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 60px; align-items: center; 
+        }
+        /* Estilo placeholder para logos de aliados si no hay imágenes */
+        .partner-box {
+            border: 2px solid rgba(255,255,255,0.2);
+            padding: 20px 40px; border-radius: 4px;
+            color: #fff; font-family: 'Rajdhani'; font-size: 1.5rem; font-weight: 700;
+            text-transform: uppercase; transition: var(--transition); cursor: pointer;
+        }
+        .partner-box:hover { border-color: var(--brand-red); color: var(--brand-red); background: rgba(255,255,255,0.05); }
+
+        /* FOOTER & FLOATING (Igual al resto) */
+        .site-footer { background: var(--steel-dark); color: #fff; padding: 80px 0 30px; border-top: 5px solid var(--brand-red); }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; }
+        .footer-col h4 { color: #fff; margin-bottom: 20px; border-left: 3px solid var(--brand-red); padding-left: 10px; }
+        .footer-col a { color: var(--steel-light); } .footer-col a:hover { color: var(--brand-red); }
+        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; color: var(--steel-light); }
+        
+        .floating-actions { position: fixed; bottom: 30px; right: 30px; z-index: 2000; display: flex; flex-direction: column; gap: 15px; }
+        .float-btn { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.5rem; box-shadow: 0 5px 20px rgba(0,0,0,0.3); transition: transform 0.3s; }
+        .float-btn:hover { transform: scale(1.1); }
+        .btn-whatsapp { background: #25D366; } .btn-call { background: var(--brand-red); animation: pulse 2s infinite; }
+
+        @media (min-width: 992px) { 
+            .nav-list { display: flex; } .nav-toggle { display: none; }
+            .history-grid { grid-template-columns: 1fr; } /* Layout centrado para lectura */
+        }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(227, 6, 19, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(227, 6, 19, 0); } 100% { box-shadow: 0 0 0 0 rgba(227, 6, 19, 0); } }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo"><img src="img/logo-api.JPG" alt="API Soluciones"></a>
+            <nav>
+                <ul class="nav-list" id="nav-menu">
+                    <li><a href="index.html" class="nav-link">Inicio</a></li>
+                    <li><a href="nosotros.html" class="nav-link active">Nosotros</a></li>
+                    <li><a href="l3.html" class="nav-link">L-3 Solutions</a></li>
+                    <li><a href="cellcrypt.html" class="nav-link">Cellcrypt</a></li>
+                    <li><a href="contacto.html" class="btn btn-primary">Contacto</a></li>
+                </ul>
+            </nav>
+            <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="about-hero">
+        <!-- Imagen corporativa de fondo -->
+        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Edificio Corporativo">
+        <div class="hero-content">
+            <h1 class="hero-title">Nuestra Empresa</h1>
+            <p class="hero-subtitle">Más de 15 años protegiendo la infraestructura crítica de Colombia.</p>
+        </div>
+    </section>
+
+    <!-- Contenido Principal -->
+    <div class="container content-section">
+        
+        <!-- Historia -->
+        <div class="history-grid">
+            <div class="text-block">
+                <h2>Liderazgo en Seguridad <br><span style="color:var(--brand-red);">Aeroportuaria</span></h2>
+                <p><strong>API (Aeropuerto, Protección e Infraestructura)</strong> se ha consolidado como el referente en Colombia para la implementación de tecnologías avanzadas de seguridad. Desde nuestros inicios, hemos trabajado con un solo objetivo: elevar los estándares de protección en puertos, aeropuertos y edificios gubernamentales.</p>
+                <p>Como representantes exclusivos de <strong>L-3 Communications Security & Detection Systems</strong>, traemos al país la tecnología utilizada en los aeropuertos más seguros del mundo. Nuestro valor no solo reside en los equipos, sino en nuestra capacidad de ingeniería para integrarlos, mantenerlos y capacitar al personal que los opera.</p>
+            </div>
+        </div>
+
+        <!-- Misión / Visión Grid -->
+        <div class="mv-grid">
+            <!-- Card Misión -->
+            <div class="mv-card">
+                <i class="fas fa-bullseye mv-icon"></i>
+                <h3>Misión</h3>
+                <p>Proveer soluciones integrales de seguridad electrónica y detección de amenazas, garantizando la continuidad operativa y la protección de vidas humanas mediante tecnología de vanguardia y soporte técnico especializado.</p>
+            </div>
+            <!-- Card Visión -->
+            <div class="mv-card">
+                <i class="fas fa-globe-americas mv-icon"></i>
+                <h3>Visión</h3>
+                <p>Ser reconocidos en 2030 como la compañía líder en la Región Andina en integración de sistemas de seguridad para infraestructura crítica, destacándonos por la innovación y la excelencia en el servicio postventa.</p>
+            </div>
+            <!-- Card Valores -->
+            <div class="mv-card">
+                <i class="fas fa-handshake mv-icon"></i>
+                <h3>Valores</h3>
+                <ul style="color:var(--steel-light); list-style: disc; padding-left:20px;">
+                    <li>Integridad y Transparencia</li>
+                    <li>Excelencia Técnica</li>
+                    <li>Compromiso con el Cliente</li>
+                    <li>Innovación Constante</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Sección Aliados -->
+    <section class="allies-section">
+        <div class="container">
+            <h2>Nuestros Aliados Estratégicos</h2>
+            <div class="logos-grid">
+                <!-- Usando texto estilizado como placeholder de logos -->
+                <div class="partner-box">L-3 Communications</div>
+                <div class="partner-box">Cellcrypt</div>
+                <div class="partner-box">Leidos</div>
+                <div class="partner-box">Rapiscan</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Actions & Footer -->
+    <div class="floating-actions">
+        <a href="https://wa.me/573001234567" target="_blank" class="float-btn btn-whatsapp"><i class="fab fa-whatsapp"></i></a>
+        <a href="tel:+5713001287" class="float-btn btn-call"><i class="fas fa-phone"></i></a>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <a href="#" style="font-family:'Rajdhani';font-size:2rem;font-weight:700;color:#fff;">API</a>
+                <p style="margin-top:15px;color:var(--steel-light);font-size:0.9rem;">Representantes exclusivos para Colombia de L-3 Communications.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Navegación</h4>
+                <ul><li><a href="index.html">Inicio</a></li><li><a href="nosotros.html">Nosotros</a></li><li><a href="l3.html">L-3</a></li><li><a href="cellcrypt.html">Cellcrypt</a></li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contacto</h4>
+                <ul style="color:var(--steel-light);font-size:0.9rem;">
+                    <li><i class="fas fa-map-marker-alt" style="color:var(--brand-red);"></i> Bogotá, Colombia</li>
+                    <li><i class="fas fa-phone" style="color:var(--brand-red);"></i> (57) 1-3001287</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom"><p>&copy; 2025 API Soluciones.</p></div>
+    </footer>
+
+    <script>
+        const navToggle = document.getElementById('nav-toggle'); const navMenu = document.getElementById('nav-menu');
+        navToggle.addEventListener('click', () => {
+            if (navMenu.style.display === 'flex') { navMenu.style.display = 'none'; } else {
+                navMenu.style.display = 'flex'; navMenu.style.flexDirection = 'column'; navMenu.style.position = 'absolute'; navMenu.style.top = '80px'; navMenu.style.left = '0'; navMenu.style.width = '100%'; navMenu.style.background = '#fff'; navMenu.style.padding = '20px'; navMenu.style.boxShadow = '0 10px 20px rgba(0,0,0,0.1)';
+            }
+        });
+    </script>
+</body>
+</html>

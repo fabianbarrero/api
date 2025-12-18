@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API · Tecnología en Seguridad Aeroportuaria</title>
+    <meta name="description" content="Soluciones avanzadas en inspección, detección de explosivos y seguridad aeroportuaria. L-3 y Cellcrypt.">
+    
+    <!-- Fuentes: Rajdhani (Tecnológica/Títulos) y Roboto (Cuerpo/Lectura) -->
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ========================================= */
+        /* 1. CONFIGURACIÓN & VARIABLES */
+        /* ========================================= */
+        :root {
+            /* Identidad Corporativa API */
+            --brand-red: #e30613;       
+            --brand-red-dark: #b8050f;
+            
+            /* Paleta Tech (Azules Acero) */
+            --steel-dark: #1e293b;      /* Textos principales */
+            --steel-blue: #334155;      /* Elementos UI */
+            --steel-light: #94a3b8;     /* Textos secundarios */
+            
+            /* Fondos */
+            --bg-body: #f8fafc;         /* Gris azulado muy claro (Tech Clean) */
+            --bg-white: #ffffff;
+            
+            --container-width: 1250px;
+            --header-height: 80px;
+            --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.08);
+            --shadow-hover: 0 20px 40px -5px rgba(227, 6, 19, 0.15); /* Sombra roja sutil */
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--steel-dark);
+            line-height: 1.6;
+            padding-top: var(--header-height);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .btn, .nav-link { font-family: 'Rajdhani', sans-serif; }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Botones Estilizados */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 12px 28px;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            border-radius: 4px; cursor: pointer; transition: var(--transition);
+            font-size: 1rem; position: relative; overflow: hidden;
+        }
+        
+        .btn-primary {
+            background-color: var(--brand-red); color: #fff;
+            border: 1px solid var(--brand-red);
+        }
+        .btn-primary:hover {
+            background-color: var(--brand-red-dark);
+            box-shadow: 0 5px 15px rgba(227, 6, 19, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent; color: var(--steel-blue);
+            border: 2px solid var(--steel-blue);
+        }
+        .btn-outline:hover {
+            border-color: var(--brand-red); color: var(--brand-red);
+        }
+
+        /* ========================================= */
+        /* 2. HEADER PRO */
+        /* ========================================= */
+        .site-header {
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            z-index: 1000;
+            display: flex; align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+
+        .header-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        /* Ajuste para que el logo se vea bien */
+        .logo img { height: 55px; width: auto; object-fit: contain; } 
+        
+        .nav-list { display: none; gap: 2rem; align-items: center; }
+        
+        .nav-link {
+            font-weight: 600; color: var(--steel-blue); font-size: 1.1rem;
+            text-transform: uppercase; position: relative; padding: 5px 0;
+        }
+        .nav-link::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+            background: var(--brand-red); transition: var(--transition);
+        }
+        .nav-link:hover { color: var(--brand-red); }
+        .nav-link:hover::after { width: 100%; }
+
+        .nav-toggle {
+            display: flex; flex-direction: column; gap: 6px; cursor: pointer;
+            background: none; border: none; padding: 10px;
+        }
+        .nav-toggle span {
+            width: 28px; height: 3px; background: var(--steel-dark); border-radius: 2px; transition: var(--transition);
+        }
+        .nav-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+        .nav-toggle.active span:nth-child(2) { opacity: 0; }
+        .nav-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -7px); }
+
+        /* ========================================= */
+        /* 3. HERO SLIDER (Impacto Visual) */
+        /* ========================================= */
+        .hero {
+            position: relative; height: 600px; overflow: hidden; background: #000;
+            /* Corte inclinado inferior para estilo Tech */
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+        }
+
+        .hero-slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0; transition: opacity 1.2s ease-in-out; z-index: 1;
+        }
+        .hero-slide.active { opacity: 1; z-index: 2; }
+
+        .hero-img {
+            width: 100%; height: 100%; object-fit: cover;
+            /* Filtro azulado sutil sobre la imagen */
+            filter: brightness(0.5) contrast(1.1);
+            transform: scale(1.1); transition: transform 8s ease;
+        }
+        .hero-slide.active .hero-img { transform: scale(1); }
+
+        /* Trama tecnológica sobre la imagen */
+        .hero-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%),
+                        url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm1 1h38v38H1V1z' fill='%23ffffff' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+            z-index: 2; pointer-events: none;
+        }
+
+        .hero-content {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            z-index: 10; text-align: center; width: 90%; max-width: 900px; color: #fff;
+        }
+
+        .hero-badge {
+            display: inline-block; padding: 6px 12px;
+            background: rgba(227, 6, 19, 0.2); border: 1px solid var(--brand-red);
+            color: #ff6b6b; font-family: 'Rajdhani'; text-transform: uppercase;
+            font-weight: 700; letter-spacing: 2px; font-size: 0.9rem; margin-bottom: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1;
+            text-transform: uppercase; font-weight: 700; margin-bottom: 20px;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .hero-title span { color: var(--brand-red); background: #fff; padding: 0 15px; display: inline-block; transform: skew(-10deg); color: var(--brand-red); }
+
+        .hero-desc { font-size: 1.2rem; margin-bottom: 35px; font-weight: 300; color: #cbd5e1; max-width: 700px; margin-left: auto; margin-right: auto; }
+
+        /* ========================================= */
+        /* 4. LAYOUT: SIDEBAR + GRID */
+        /* ========================================= */
+        .main-layout {
+            display: grid; grid-template-columns: 1fr; gap: 40px;
+            padding: 80px 20px; position: relative;
+        }
+
+        /* --- SIDEBAR STICKY MEJORADO --- */
+        .sidebar {
+            background: #fff; border-radius: 8px;
+            box-shadow: var(--shadow-soft); padding: 0;
+            height: fit-content; position: sticky; top: 100px;
+            border: 1px solid rgba(0,0,0,0.05); overflow: hidden;
+        }
+
+        .sidebar-header {
+            background: var(--steel-dark); color: #fff; padding: 20px;
+            font-family: 'Rajdhani'; font-size: 1.3rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .sidebar-menu { padding: 10px 0; }
+        
+        .cat-item { border-bottom: 1px solid #f1f5f9; }
+        .cat-item:last-child { border-bottom: none; }
+
+        .cat-btn {
+            width: 100%; text-align: left; padding: 15px 25px;
+            background: none; border: none; cursor: pointer;
+            font-family: 'Rajdhani'; font-weight: 600; font-size: 1.1rem;
+            color: var(--steel-blue); display: flex; justify-content: space-between;
+            transition: var(--transition);
+        }
+        .cat-btn:hover { color: var(--brand-red); background: #f8fafc; }
+        .cat-btn.active { color: var(--brand-red); background: #fff5f5; border-left: 4px solid var(--brand-red); }
+        .cat-btn i { transition: transform 0.3s; font-size: 0.9rem; margin-top: 4px; }
+        .cat-btn.active i { transform: rotate(180deg); }
+
+        .submenu {
+            display: none; background: #f8fafc; padding: 10px 0;
+            border-top: 1px solid #f1f5f9;
+        }
+        .submenu.open { display: block; animation: slideDown 0.3s ease; }
+        .submenu li a {
+            display: block; padding: 8px 35px; font-size: 0.95rem; color: var(--steel-light);
+            border-left: 2px solid transparent;
+        }
+        .submenu li a:hover { color: var(--brand-red); border-left-color: var(--brand-red); background: #fff; }
+
+        /* Banner Cellcrypt Sidebar */
+        .sidebar-promo {
+            margin: 20px; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #fff; padding: 25px; border-radius: 8px; text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .sidebar-promo h4 { color: var(--brand-red); margin-bottom: 10px; font-size: 1.2rem; }
+        .sidebar-promo p { font-size: 0.85rem; color: #94a3b8; margin-bottom: 15px; }
+
+        /* --- PARRILLA PRODUCTOS --- */
+        .section-header {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid #e2e8f0;
+        }
+        .section-title { font-size: 2.2rem; color: var(--steel-dark); text-transform: uppercase; line-height: 1; }
+        .section-title span { color: var(--brand-red); }
+        .section-subtitle { font-family: 'Roboto'; color: var(--steel-light); font-size: 1rem; margin-top: 5px; }
+
+        .products-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: #fff; border-radius: 8px; overflow: hidden;
+            box-shadow: var(--shadow-soft); transition: var(--transition);
+            border: 1px solid transparent; position: relative;
+            display: flex; flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(227, 6, 19, 0.2);
+        }
+
+        /* Etiqueta de Categoría */
+        .card-tag {
+            position: absolute; top: 15px; left: 15px; z-index: 10;
+            background: rgba(30, 41, 59, 0.9); color: #fff;
+            padding: 4px 10px; border-radius: 4px; font-size: 0.75rem;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .card-img-wrap {
+            height: 220px; padding: 30px;
+            background: #fff; display: flex; align-items: center; justify-content: center;
+            border-bottom: 1px solid #f1f5f9; position: relative; overflow: hidden;
+        }
+        /* Fondo sutil gris en imagen */
+        .card-img-wrap::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, #f1f5f9 0%, transparent 70%); opacity: 0.5;
+        }
+        
+        .card-img {
+            max-height: 100%; width: auto; position: relative; z-index: 5;
+            transition: transform 0.4s ease; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+        }
+        .product-card:hover .card-img { transform: scale(1.1); }
+
+        .card-body { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
+        
+        .card-title {
+            font-size: 1.4rem; color: var(--steel-dark); margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .card-desc {
+            font-size: 0.95rem; color: var(--steel-light); margin-bottom: 20px; flex-grow: 1;
+        }
+
+        .card-action {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-top: auto; padding-top: 15px; border-top: 1px solid #f1f5f9;
+        }
+        .details-link {
+            font-family: 'Rajdhani'; font-weight: 700; color: var(--brand-red);
+            text-transform: uppercase; font-size: 0.9rem; display: flex; align-items: center; gap: 5px;
+        }
+        .details-link:hover { gap: 10px; } /* Animación flecha */
+
+        /* ========================================= */
+        /* 5. FOOTER */
+        /* ========================================= */
+        .site-footer {
+            background: var(--steel-dark); color: #fff;
+            padding: 80px 0 30px; margin-top: 60px;
+            border-top: 5px solid var(--brand-red);
+        }
+
+        .footer-logo {
+            font-family: 'Rajdhani'; font-weight: 700; font-size: 2rem;
+            color: #fff; margin-bottom: 20px; display: inline-block;
+        }
+        
+        .footer-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 50px; margin-bottom: 50px;
+        }
+
+        .footer-col h4 {
+            color: #fff; margin-bottom: 25px; font-size: 1.1rem;
+            text-transform: uppercase; letter-spacing: 1px;
+            border-left: 3px solid var(--brand-red); padding-left: 10px;
+        }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col a { color: var(--steel-light); transition: var(--transition); }
+        .footer-col a:hover { color: var(--brand-red); padding-left: 5px; }
+
+        .contact-list li {
+            display: flex; gap: 15px; color: var(--steel-light); align-items: flex-start;
+        }
+        .contact-list i { color: var(--brand-red); margin-top: 5px; }
+
+        .footer-bottom {
+            text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.85rem; color: var(--steel-light);
+        }
+
+        /* ========================================= */
+        /* 6. BOTONES FLOTANTES (ACTION BAR) */
+        /* ========================================= */
+        .floating-actions {
+            position: fixed; bottom: 30px; right: 30px; z-index: 2000;
+            display: flex; flex-direction: column; gap: 15px;
+        }
+
+        .float-btn {
+            width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 1.5rem; text-decoration: none;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        
+        .float-btn:hover { transform: scale(1.1); }
+        
+        /* Tooltip */
+        .float-btn::before {
+            content: attr(data-tooltip);
+            position: absolute; right: 75px; top: 50%; transform: translateY(-50%);
+            background: rgba(0,0,0,0.8); color: #fff; padding: 5px 12px;
+            border-radius: 4px; font-size: 0.8rem; font-family: 'Roboto';
+            white-space: nowrap; opacity: 0; pointer-events: none; transition: 0.3s;
+        }
+        .float-btn:hover::before { opacity: 1; right: 80px; }
+
+        .btn-whatsapp { background: #25D366; }
+        .btn-call { background: var(--brand-red); animation: pulse 2s infinite; }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(227, 6, 19, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(227, 6, 19, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(227, 6, 19, 0); }
+        }
+
+        /* ========================================= */
+        /* 7. RESPONSIVE */
+        /* ========================================= */
+        @media (min-width: 992px) {
+            .nav-list { display: flex; }
+            .nav-toggle { display: none; }
+            .main-layout { grid-template-columns: 280px 1fr; }
+        }
+
+        @media (max-width: 991px) {
+            .hero { height: 450px; }
+            .hero-title { font-size: 2.5rem; }
+            .sidebar { position: static; margin-bottom: 40px; }
+            
+            /* Menú Móvil Fullscreen */
+            .nav-list.active {
+                display: flex; flex-direction: column; position: fixed;
+                top: var(--header-height); left: 0; width: 100%; height: calc(100vh - var(--header-height));
+                background: #fff; padding: 40px; border-top: 1px solid #eee;
+                justify-content: flex-start;
+            }
+        }
+
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <!-- Logo API -->
+            <a href="#" class="logo">
+                <img src="img/logo-api.JPG" alt="API Soluciones Aeroportuarias">
+                <!-- Fallback visual si la imagen falla -->
+            </a>
+
+            <!-- Nav -->
+            <nav>
+                <ul class="nav-list" id="nav-menu">
+                    <li><a href="index.html" class="nav-link">Inicio</a></li>
+                    <li><a href="nosotros.html" class="nav-link">Nosotros</a></li>
+                    <li><a href="l3.html" class="nav-link">L-3 Solutions</a></li>
+                    <li><a href="cellcrypt.html" class="nav-link">Cellcrypt</a></li>
+                    <li><a href="#" class="btn btn-primary" style="padding: 8px 20px; font-size:0.9rem;">Contacto</a></li>
+                </ul>
+            </nav>
+
+            <button class="nav-toggle" id="nav-toggle">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <!-- Slide 1 -->
+        <div class="hero-slide active">
+            <div class="hero-overlay"></div>
+            <img src="https://images.unsplash.com/photo-1542296332-2e44a99cfef0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Aeropuerto" class="hero-img">
+            <div class="hero-content">
+                <span class="hero-badge">Tecnología de Punta</span>
+                <h1 class="hero-title">Seguridad <span>Aeroportuaria</span></h1>
+                <p class="hero-desc">Líderes en detección de explosivos y control de pasajeros. Representantes exclusivos de L-3 Communications en la región.</p>
+                <div style="display:flex; gap:15px; justify-content:center;">
+                    <a href="#" class="btn btn-primary">Ver Catálogo</a>
+                    <a href="#" class="btn btn-outline" style="color:#fff; border-color:#fff;">Nuestra Empresa</a>
+                </div>
+            </div>
+        </div>
+        <!-- Slide 2 -->
+        <div class="hero-slide">
+            <div class="hero-overlay"></div>
+            <img src="https://images.unsplash.com/photo-1517953685833-40f5f134ebb9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Scanner" class="hero-img">
+            <div class="hero-content">
+                <span class="hero-badge">Inspección Certificada</span>
+                <h1 class="hero-title">Escáneres <span>Inteligentes</span></h1>
+                <p class="hero-desc">Sistemas de tomografía computarizada (CT) y rayos X con detección automática de amenazas.</p>
+                <a href="#" class="btn btn-primary">Conocer Equipos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container main-layout">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                Líneas de Negocio
+            </div>
+            <div class="sidebar-menu">
+                <!-- Item 1 -->
+                <div class="cat-item">
+                    <button class="cat-btn" onclick="toggleSubmenu(this)">
+                        L-3 Security <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <ul class="submenu open">
+                        <li><a href="#">Línea Convencional</a></li>
+                        <li><a href="#">Línea Especializada</a></li>
+                        <li><a href="#">Línea Cargo</a></li>
+                    </ul>
+                </div>
+                <!-- Item 2 -->
+                <div class="cat-item">
+                    <button class="cat-btn" onclick="toggleSubmenu(this)">
+                        Cellcrypt <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <ul class="submenu">
+                        <li><a href="#">Seguridad de Voz</a></li>
+                        <li><a href="#">Mensajería Encriptada</a></li>
+                    </ul>
+                </div>
+                <!-- Item 3 -->
+                <div class="cat-item">
+                    <button class="cat-btn">
+                        Servicios API
+                    </button>
+                </div>
+            </div>
+
+            <!-- Promo Sidebar -->
+            <div class="sidebar-promo">
+                <h4>Comunicación Crítica</h4>
+                <p>Proteja las comunicaciones de su organización con Cellcrypt.</p>
+                <img src="https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="Cellcrypt" style="border-radius:4px; margin-bottom:15px; opacity:0.8;">
+                <a href="#" class="btn btn-primary" style="width:100%; padding:8px; font-size:0.85rem;">Solicitar Demo</a>
+            </div>
+        </aside>
+
+        <!-- Product Grid -->
+        <main class="content-area">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Soluciones <span>Destacadas</span></h2>
+                    <p class="section-subtitle">Equipos de última generación para infraestructura crítica</p>
+                </div>
+                <!-- Filtros opcionales si quisieras -->
+            </div>
+
+            <div class="products-grid">
+                <!-- Producto 1 -->
+                <article class="product-card">
+                    <span class="card-tag">Equipaje Mano</span>
+                    <div class="card-img-wrap">
+                        <img src="img/producto-px64.jpg" alt="PX 6.4" class="card-img">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">PX 6.4</h3>
+                        <p class="card-desc">Escáner de rayos X versátil con potente capacidad de imagen y detección automática.</p>
+                        <div class="card-action">
+                            <a href="#" class="details-link">Ver Ficha <i class="fas fa-arrow-right"></i></a>
+                            <i class="fas fa-shield-alt" style="color:#cbd5e1;"></i>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Producto 2 -->
+                <article class="product-card">
+                    <span class="card-tag" style="background:var(--brand-red);">Certificado TSA</span>
+                    <div class="card-img-wrap">
+                        <img src="img/producto-3dx.jpg" alt="Examiner 3DX" class="card-img">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Examiner 3DX</h3>
+                        <p class="card-desc">Sistema de detección de explosivos (EDS) para equipaje facturado. Alta velocidad.</p>
+                        <div class="card-action">
+                            <a href="#" class="details-link">Ver Ficha <i class="fas fa-arrow-right"></i></a>
+                            <i class="fas fa-plane-departure" style="color:#cbd5e1;"></i>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Producto 3 -->
+                <article class="product-card">
+                    <span class="card-tag">Body Scanner</span>
+                    <div class="card-img-wrap">
+                        <img src="img/producto-provision.jpg" alt="ProVision" class="card-img">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">ProVision 2</h3>
+                        <p class="card-desc">Escaneo de ondas milimétricas seguro y sin radiación ionizante. Privacidad total.</p>
+                        <div class="card-action">
+                            <a href="#" class="details-link">Ver Ficha <i class="fas fa-arrow-right"></i></a>
+                            <i class="fas fa-user-shield" style="color:#cbd5e1;"></i>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Producto 4 -->
+                <article class="product-card">
+                    <span class="card-tag">Detección Trazas</span>
+                    <div class="card-img-wrap">
+                        <img src="img/producto-optex.jpg" alt="Optex" class="card-img">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Optex</h3>
+                        <p class="card-desc">Detector portátil de trazas de explosivos. Resultados en segundos.</p>
+                        <div class="card-action">
+                            <a href="#" class="details-link">Ver Ficha <i class="fas fa-arrow-right"></i></a>
+                            <i class="fas fa-search" style="color:#cbd5e1;"></i>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </main>
+    </div>
+
+    <!-- Botones Flotantes -->
+    <div class="floating-actions">
+        <a href="https://wa.me/573177501823" target="_blank" class="float-btn btn-whatsapp" data-tooltip="Escríbenos por WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="tel:+573177501823" class="float-btn btn-call" data-tooltip="Llámanos Ahora">
+            <i class="fas fa-phone"></i>
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <a href="#" style="font-family:'Rajdhani'; font-size:2rem; font-weight:700; color:#fff; text-decoration:none;">
+                    API
+                </a>
+                <p style="margin-top:15px; color:#94a3b8; font-size:0.9rem;">
+                    Representantes exclusivos para Colombia de L-3 Communications Security & Detection Systems.
+                </p>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Navegación</h4>
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Nosotros</a></li>
+                    <li><a href="#">Productos</a></li>
+                    <li><a href="#">Servicios</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Contacto</h4>
+                <ul class="contact-list">
+                    <li><i class="fas fa-map-marker-alt"></i> Av. 19 # 95-31 Of. 501, Bogotá</li>
+                    <li><i class="fas fa-envelope"></i> info@api-int.com</li>
+                    <li><i class="fas fa-phone-alt"></i> (57) 1-3001287</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 API Soluciones Aeroportuarias. <span style="color:var(--brand-red);"></span></p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // 1. Menú Móvil
+        const navToggle = document.getElementById('nav-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // 2. Acordeón Sidebar
+        function toggleSubmenu(btn) {
+            const item = btn.parentElement;
+            const submenu = item.querySelector('.submenu');
+            const icon = btn.querySelector('i');
+            
+            submenu.classList.toggle('open');
+            btn.classList.toggle('active');
+            
+            // Cerrar otros (Opcional - Estilo Accordion estricto)
+            /* document.querySelectorAll('.submenu').forEach(sub => {
+                if(sub !== submenu) sub.classList.remove('open');
+            });
+            */
+        }
+
+        // 3. Hero Slider (Fade)
+        const slides = document.querySelectorAll('.hero-slide');
+        let currentSlide = 0;
+
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        setInterval(nextSlide, 5000);
+
+    </script>
+</body>
+</html>

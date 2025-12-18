@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cellcrypt - Comunicaciones Seguras | API Soluciones</title>
+    <meta name="description" content="Encriptación de grado gubernamental para voz y mensajería. Proteja sus comunicaciones móviles con Cellcrypt.">
+    
+    <!-- Fuentes y Estilos -->
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ========================================= */
+        /* CSS "Pro-Tech Fusion" (Sistema Global)    */
+        /* ========================================= */
+        :root {
+            --brand-red: #e30613; --brand-red-dark: #b8050f;
+            --steel-dark: #1e293b; --steel-blue: #334155; --steel-light: #94a3b8;
+            --bg-body: #f8fafc; --bg-white: #ffffff;
+            --container-width: 1250px; --header-height: 80px;
+            --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; background-color: var(--bg-body); color: var(--steel-dark); line-height: 1.6; padding-top: var(--header-height); overflow-x: hidden; }
+        h1, h2, h3, h4, .btn, .nav-link { font-family: 'Rajdhani', sans-serif; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; } img { max-width: 100%; display: block; }
+        .container { max-width: var(--container-width); margin: 0 auto; padding: 0 20px; }
+
+        /* UI Kit */
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 10px 25px; font-weight: 700; text-transform: uppercase; border-radius: 4px; cursor: pointer; transition: var(--transition); font-size: 0.9rem; }
+        .btn-primary { background-color: var(--brand-red); color: #fff; border: 1px solid var(--brand-red); }
+        .btn-primary:hover { background-color: var(--brand-red-dark); transform: translateY(-2px); }
+        .btn-outline { background: transparent; color: var(--steel-blue); border: 2px solid var(--steel-blue); }
+        .btn-outline:hover { border-color: var(--brand-red); color: var(--brand-red); }
+
+        /* Header */
+        .site-header { position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height); background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 1000; display: flex; align-items: center; }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .logo img { height: 55px; width: auto; object-fit: contain; }
+        .nav-list { display: none; gap: 2rem; align-items: center; }
+        .nav-link { font-weight: 600; color: var(--steel-blue); font-size: 1.1rem; text-transform: uppercase; padding: 5px 0; }
+        .nav-link:hover, .nav-link.active { color: var(--brand-red); }
+        .nav-toggle { display: flex; flex-direction: column; gap: 6px; cursor: pointer; background: none; border: none; padding: 10px; }
+        .nav-toggle span { width: 28px; height: 3px; background: var(--steel-dark); border-radius: 2px; }
+
+        /* Page Hero (Variación Cellcrypt: Más oscuro/digital) */
+        .page-hero { position: relative; height: 350px; background: #0f172a; display: flex; align-items: center; justify-content: center; text-align: center; color: #fff; overflow: hidden; }
+        /* La imagen de fondo tiene un filtro 'hue-rotate' para que se vea más azul/cyber */
+        .page-hero img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; filter: hue-rotate(190deg) contrast(1.2); }
+        .hero-content { position: relative; z-index: 2; max-width: 800px; padding: 0 20px; }
+        .hero-title { font-size: 3rem; text-transform: uppercase; margin-bottom: 10px; text-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .hero-subtitle { font-size: 1.2rem; font-weight: 300; color: #e2e8f0; }
+
+        /* Layout (Idéntico a L-3) */
+        .main-layout { display: grid; grid-template-columns: 1fr; gap: 40px; padding: 60px 20px; }
+        
+        /* Sidebar (Estilos L-3) */
+        .sidebar { background: #fff; border-radius: 8px; box-shadow: var(--shadow-soft); padding: 0; height: fit-content; position: sticky; top: 100px; border: 1px solid rgba(0,0,0,0.05); }
+        .sidebar-header { background: var(--steel-dark); color: #fff; padding: 20px; font-family: 'Rajdhani'; font-size: 1.3rem; font-weight: 700; text-transform: uppercase; }
+        .cat-btn { width: 100%; text-align: left; padding: 15px 25px; background: none; border: none; cursor: pointer; font-family: 'Rajdhani'; font-weight: 600; font-size: 1.1rem; color: var(--steel-blue); display: flex; justify-content: space-between; border-bottom: 1px solid #f1f5f9; transition: var(--transition); }
+        .cat-btn:hover { color: var(--brand-red); background: #f8fafc; }
+        .cat-btn.active { color: var(--brand-red); background: #fff5f5; border-left: 4px solid var(--brand-red); }
+
+        /* Grid Productos (Reutilizado de L-3 para consistencia) */
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        
+        .product-card { 
+            background: #fff; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-soft); transition: var(--transition); border: 1px solid transparent; display: flex; flex-direction: column;
+        }
+        .product-card:hover { transform: translateY(-8px); border-color: rgba(227, 6, 19, 0.2); }
+        
+        .card-img-wrap { 
+            height: 220px; padding: 0; /* Sin padding interno para que la imagen del software llene el espacio o se vea como banner */
+            background: #f1f5f9; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #e2e8f0; position: relative; overflow: hidden;
+        }
+        .card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; opacity: 0.9; }
+        .product-card:hover .card-img { transform: scale(1.05); opacity: 1; }
+        
+        .card-body { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-title { font-size: 1.4rem; color: var(--steel-dark); margin-bottom: 10px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .card-desc { font-size: 0.95rem; color: var(--steel-light); margin-bottom: 20px; flex-grow: 1; }
+        
+        /* Pequeña variación en la acción: Iconos de candado */
+        .card-action { margin-top: auto; padding-top: 15px; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; }
+        .details-link { font-family: 'Rajdhani'; font-weight: 700; color: var(--brand-red); text-transform: uppercase; font-size: 0.9rem; display: flex; align-items: center; gap: 5px; }
+
+        /* Footer & Float */
+        .site-footer { background: var(--steel-dark); color: #fff; padding: 80px 0 30px; border-top: 5px solid var(--brand-red); margin-top: 60px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; }
+        .footer-col h4 { color: #fff; margin-bottom: 20px; border-left: 3px solid var(--brand-red); padding-left: 10px; }
+        .footer-col a { color: var(--steel-light); } .footer-col a:hover { color: var(--brand-red); }
+        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; color: var(--steel-light); }
+        .floating-actions { position: fixed; bottom: 30px; right: 30px; z-index: 2000; display: flex; flex-direction: column; gap: 15px; }
+        .float-btn { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.5rem; box-shadow: 0 5px 20px rgba(0,0,0,0.3); transition: transform 0.3s; }
+        .float-btn:hover { transform: scale(1.1); }
+        .btn-whatsapp { background: #25D366; } .btn-call { background: var(--brand-red); animation: pulse 2s infinite; }
+
+        @media (min-width: 992px) { .nav-list { display: flex; } .nav-toggle { display: none; } .main-layout { grid-template-columns: 280px 1fr; } }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(227, 6, 19, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(227, 6, 19, 0); } 100% { box-shadow: 0 0 0 0 rgba(227, 6, 19, 0); } }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo"><img src="img/logo-api.JPG" alt="API Soluciones"></a>
+            <nav>
+                <ul class="nav-list" id="nav-menu">
+                    <li><a href="index.html" class="nav-link">Inicio</a></li>
+                    <li><a href="nosotros.html" class="nav-link">Nosotros</a></li>
+                    <li><a href="l3.html" class="nav-link">L-3 Solutions</a></li>
+                    <li><a href="cellcrypt.html" class="nav-link active">Cellcrypt</a></li>
+                    <li><a href="contacto.html" class="btn btn-primary">Contacto</a></li>
+                </ul>
+            </nav>
+            <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Ciberseguridad">
+        <div class="hero-content">
+            <h1 class="hero-title">Cellcrypt Mobile</h1>
+            <p class="hero-subtitle">Plataforma de comunicaciones cifradas para gobierno y empresa.</p>
+        </div>
+    </section>
+
+    <!-- Contenido Principal -->
+    <div class="container main-layout">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">Capacidades</div>
+            <div class="sidebar-menu">
+                <button class="cat-btn active">Visión General <i class="fas fa-chevron-right"></i></button>
+                <button class="cat-btn">Voz Segura <i class="fas fa-chevron-right"></i></button>
+                <button class="cat-btn">Mensajería <i class="fas fa-chevron-right"></i></button>
+                <button class="cat-btn">Conferencias <i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div style="padding: 20px;">
+                <div style="background:#0f172a; padding:20px; border-radius:4px; color:#fff; text-align:center; border:1px solid rgba(255,255,255,0.1);">
+                    <i class="fas fa-lock" style="font-size:2rem; color:var(--brand-red); margin-bottom:10px;"></i>
+                    <h4 style="color:#fff; margin-bottom:5px;">Prueba Piloto</h4>
+                    <p style="font-size:0.85rem; margin-bottom:15px; color:#94a3b8;">Asegure sus comunicaciones hoy mismo.</p>
+                    <a href="contacto.html" class="btn btn-primary" style="width:100%; font-size:0.8rem;">Solicitar Demo</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Grid (Igual que L-3 pero con contenido de Software) -->
+        <main>
+            <h2 style="font-size:2rem; margin-bottom:30px; color:var(--steel-dark);">Suite de <span style="color:var(--brand-red);">Seguridad</span></h2>
+            
+            <div class="products-grid">
+                
+                <!-- Card 1: Voz -->
+                <article class="product-card">
+                    <div class="card-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Voz Segura" class="card-img">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Voz Encriptada</h3>
+                        <p class="card-desc">Llamadas de alta calidad con cifrado de extremo a extremo. Imposible de interceptar por terceros.</p>
+                        <div class="card-action">
+                            <span class="details-link">Características <i class="fas fa-arrow-right"></i></span>
+                            <i class="fas fa-phone-slash" style="color:#cbd5e1;"></i>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 2: Mensajería -->
+                <article class="product-card">
+                    <div class="card-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Mensajería" class="card-img">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Mensajería Segura</h3>
+                        <p class="card-desc">Envío de archivos y chat con borrado remoto y autodestrucción de mensajes (Burn-on-read).</p>
+                        <div class="card-action">
+                            <span class="details-link">Características <i class="fas fa-arrow-right"></i></span>
+                            <i class="fas fa-comment-slash" style="color:#cbd5e1;"></i>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 3: Conferencias -->
+                <article class="product-card">
+                    <div class="card-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Conferencias" class="card-img">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Conferencias</h3>
+                        <p class="card-desc">Reuniones grupales seguras al instante. Visualización de participantes y control de moderador.</p>
+                        <div class="card-action">
+                            <span class="details-link">Características <i class="fas fa-arrow-right"></i></span>
+                            <i class="fas fa-users-slash" style="color:#cbd5e1;"></i>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 4: Multi-Plataforma -->
+                <article class="product-card">
+                    <div class="card-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Móvil" class="card-img">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Multi-Plataforma</h3>
+                        <p class="card-desc">Compatible con iOS, Android y BlackBerry. Interoperabilidad total entre dispositivos.</p>
+                        <div class="card-action">
+                            <span class="details-link">Compatibilidad <i class="fas fa-arrow-right"></i></span>
+                            <i class="fas fa-mobile-alt" style="color:#cbd5e1;"></i>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Actions & Footer -->
+    <div class="floating-actions">
+        <a href="https://wa.me/573001234567" target="_blank" class="float-btn btn-whatsapp"><i class="fab fa-whatsapp"></i></a>
+        <a href="tel:+5713001287" class="float-btn btn-call"><i class="fas fa-phone"></i></a>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <a href="#" style="font-family:'Rajdhani';font-size:2rem;font-weight:700;color:#fff;">API</a>
+                <p style="margin-top:15px;color:var(--steel-light);font-size:0.9rem;">Representantes exclusivos para Colombia de L-3 Communications.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Navegación</h4>
+                <ul><li><a href="index.html">Inicio</a></li><li><a href="nosotros.html">Nosotros</a></li><li><a href="l3.html">L-3</a></li><li><a href="cellcrypt.html">Cellcrypt</a></li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contacto</h4>
+                <ul style="color:var(--steel-light);font-size:0.9rem;">
+                    <li><i class="fas fa-map-marker-alt" style="color:var(--brand-red);"></i> Bogotá, Colombia</li>
+                    <li><i class="fas fa-phone" style="color:var(--brand-red);"></i> (57) 1-3001287</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom"><p>&copy; 2025 API Soluciones.</p></div>
+    </footer>
+
+    <script>
+        const navToggle = document.getElementById('nav-toggle'); const navMenu = document.getElementById('nav-menu');
+        navToggle.addEventListener('click', () => {
+            if (navMenu.style.display === 'flex') { navMenu.style.display = 'none'; } else {
+                navMenu.style.display = 'flex'; navMenu.style.flexDirection = 'column'; navMenu.style.position = 'absolute'; navMenu.style.top = '80px'; navMenu.style.left = '0'; navMenu.style.width = '100%'; navMenu.style.background = '#fff'; navMenu.style.padding = '20px'; navMenu.style.boxShadow = '0 10px 20px rgba(0,0,0,0.1)';
+            }
+        });
+    </script>
+</body>
+</html>

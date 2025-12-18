@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProVision - Escáner Corporal | API Soluciones</title>
+    <meta name="description" content="Escáner corporal avanzado con tecnología de ondas milimétricas. Detección segura y rápida para aeropuertos.">
+    
+    <!-- Fuentes: Rajdhani y Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ========================================= */
+        /* 1. CONFIGURACIÓN & VARIABLES (Heredadas) */
+        /* ========================================= */
+        :root {
+            --brand-red: #e30613;       
+            --brand-red-dark: #b8050f;
+            --steel-dark: #1e293b;
+            --steel-blue: #334155;
+            --steel-light: #94a3b8;
+            --bg-body: #f8fafc;
+            --bg-white: #ffffff;
+            --container-width: 1250px;
+            --header-height: 80px;
+            --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--steel-dark);
+            line-height: 1.6;
+            padding-top: var(--header-height);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .btn, .nav-link, .tab { font-family: 'Rajdhani', sans-serif; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Botones Globales */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 12px 28px; font-weight: 700; text-transform: uppercase; 
+            letter-spacing: 1px; border-radius: 4px; cursor: pointer; 
+            transition: var(--transition); font-size: 1rem;
+        }
+        .btn-primary {
+            background-color: var(--brand-red); color: #fff; border: 1px solid var(--brand-red);
+        }
+        .btn-primary:hover {
+            background-color: var(--brand-red-dark); transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(227, 6, 19, 0.3);
+        }
+        .btn-secondary {
+            background: transparent; border: 2px solid var(--steel-blue); color: var(--steel-blue);
+            font-size: 0.85rem; padding: 8px 16px;
+        }
+        .btn-secondary:hover { border-color: var(--brand-red); color: var(--brand-red); }
+
+        /* ========================================= */
+        /* 2. HEADER */
+        /* ========================================= */
+        .site-header {
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 1000;
+            display: flex; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo img { height: 55px; width: auto; object-fit: contain; }
+        
+        .nav-list { display: none; gap: 2rem; align-items: center; }
+        .nav-link {
+            font-weight: 600; color: var(--steel-blue); font-size: 1.1rem;
+            text-transform: uppercase; position: relative; padding: 5px 0;
+        }
+        .nav-link:hover { color: var(--brand-red); }
+        .nav-toggle { display: flex; flex-direction: column; gap: 6px; cursor: pointer; background: none; border: none; padding: 10px; }
+        .nav-toggle span { width: 28px; height: 3px; background: var(--steel-dark); border-radius: 2px; }
+
+        /* ========================================= */
+        /* 3. PRODUCT HERO (Breadcrumb style) */
+        /* ========================================= */
+        .page-header {
+            background: var(--steel-dark); color: #fff; padding: 40px 0;
+            margin-bottom: 60px; position: relative;
+        }
+        .page-header::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--brand-red) 0%, transparent 100%);
+        }
+        .breadcrumb { font-size: 0.9rem; color: var(--steel-light); margin-bottom: 10px; }
+        .breadcrumb a:hover { color: #fff; }
+        .page-title { font-size: 2.5rem; text-transform: uppercase; margin: 0; }
+
+        /* ========================================= */
+        /* 4. PRODUCT DETAIL LAYOUT */
+        /* ========================================= */
+        .product-detail {
+            display: grid; grid-template-columns: 1fr; gap: 50px;
+            margin-bottom: 80px;
+        }
+
+        /* --- Columna Izquierda: Galería --- */
+        .product-media { position: relative; }
+        
+        .main-image-container {
+            background: #fff; border-radius: 8px; padding: 40px;
+            border: 1px solid #e2e8f0; box-shadow: var(--shadow-soft);
+            margin-bottom: 20px; display: flex; align-items: center; justify-content: center;
+            height: 400px; position: relative; overflow: hidden;
+        }
+        .main-image { max-height: 100%; max-width: 100%; object-fit: contain; transition: transform 0.5s; }
+        .main-image:hover { transform: scale(1.05); }
+
+        .thumbnails { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        .thumb {
+            background: #fff; border: 2px solid transparent; border-radius: 4px;
+            cursor: pointer; padding: 5px; height: 80px; width: 100%; object-fit: contain;
+            transition: var(--transition);
+        }
+        .thumb:hover, .thumb.active { border-color: var(--brand-red); }
+
+        /* --- Columna Derecha: Info --- */
+        .product-info h1 { font-size: 3rem; line-height: 1.1; margin-bottom: 10px; color: var(--steel-dark); }
+        .brand-tag {
+            display: inline-block; background: #eff6ff; color: var(--steel-blue);
+            padding: 4px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: 700;
+            text-transform: uppercase; margin-bottom: 20px; border: 1px solid #dbeafe;
+        }
+        
+        .intro { font-size: 1.1rem; color: var(--steel-light); margin-bottom: 30px; border-left: 4px solid var(--brand-red); padding-left: 20px; }
+        
+        .availability {
+            margin: 20px 0; font-size: 0.9rem; color: var(--steel-blue);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .stock-indicator {
+            width: 10px; height: 10px; border-radius: 50%; background: #22c55e;
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2);
+        }
+
+        .cta-group { display: flex; gap: 15px; margin-bottom: 40px; }
+
+        /* --- TABS SYSTEM --- */
+        .tabs-container { margin-top: 40px; }
+        
+        .tab-list {
+            display: flex; border-bottom: 2px solid #e2e8f0; margin-bottom: 30px; overflow-x: auto;
+        }
+        .tab {
+            padding: 10px 25px; cursor: pointer; font-weight: 700; color: var(--steel-light);
+            text-transform: uppercase; border-bottom: 2px solid transparent; margin-bottom: -2px;
+            white-space: nowrap; transition: var(--transition);
+        }
+        .tab:hover { color: var(--steel-dark); }
+        .tab.active { color: var(--brand-red); border-bottom-color: var(--brand-red); }
+
+        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+        
+        .tab-content ul { padding-left: 20px; }
+        .tab-content li { margin-bottom: 10px; list-style-type: square; color: var(--brand-red); }
+        .tab-content li span { color: var(--steel-dark); }
+        
+        .tech-specs dl { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .tech-specs dt { font-weight: 700; color: var(--steel-dark); }
+        .tech-specs dd { color: var(--steel-light); margin: 0; }
+
+        /* ========================================= */
+        /* 5. RELATED PRODUCTS */
+        /* ========================================= */
+        .recommended { background: #fff; padding: 60px 0; border-top: 1px solid #f1f5f9; }
+        .rec-title { font-size: 1.8rem; margin-bottom: 30px; color: var(--steel-dark); }
+        
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        
+        .product-card {
+            background: #fff; border: 1px solid #f1f5f9; border-radius: 8px;
+            padding: 20px; text-align: center; transition: var(--transition);
+        }
+        .product-card:hover { border-color: var(--brand-red); transform: translateY(-5px); box-shadow: var(--shadow-soft); }
+        .product-card img { height: 150px; margin: 0 auto 15px; object-fit: contain; }
+        .product-card h4 { font-size: 1.2rem; margin-bottom: 10px; }
+
+        /* ========================================= */
+        /* 6. FOOTER & FLOATING */
+        /* ========================================= */
+        .site-footer {
+            background: var(--steel-dark); color: #fff; padding: 80px 0 30px;
+            border-top: 5px solid var(--brand-red); margin-top: 0;
+        }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; }
+        .footer-col h4 { color: #fff; margin-bottom: 20px; border-left: 3px solid var(--brand-red); padding-left: 10px; }
+        .footer-col a { color: var(--steel-light); } .footer-col a:hover { color: var(--brand-red); }
+        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; color: var(--steel-light); }
+
+        .floating-actions { position: fixed; bottom: 30px; right: 30px; z-index: 2000; display: flex; flex-direction: column; gap: 15px; }
+        .float-btn {
+            width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 1.5rem; box-shadow: 0 5px 20px rgba(0,0,0,0.3); transition: transform 0.3s;
+        }
+        .float-btn:hover { transform: scale(1.1); }
+        .btn-whatsapp { background: #25D366; } .btn-call { background: var(--brand-red); animation: pulse 2s infinite; }
+
+        @media (min-width: 992px) {
+            .nav-list { display: flex; } .nav-toggle { display: none; }
+            .product-detail { grid-template-columns: 1fr 1fr; }
+        }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(227, 6, 19, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(227, 6, 19, 0); } 100% { box-shadow: 0 0 0 0 rgba(227, 6, 19, 0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">
+                <img src="img/logo-api.JPG" alt="API Soluciones Aeroportuarias">
+            </a>
+            <nav>
+                <ul class="nav-list" id="nav-menu">
+                    <li><a href="index.html" class="nav-link">Inicio</a></li>
+                    <li><a href="nosotros.html" class="nav-link">Nosotros</a></li>
+                    <li><a href="l3.html" class="nav-link">L-3 Solutions</a></li>
+                    <li><a href="cellcrypt.html" class="nav-link">Cellcrypt</a></li>
+                    <li><a href="#" class="btn btn-primary" style="padding: 8px 20px; font-size:0.9rem;">Contacto</a></li>
+                </ul>
+            </nav>
+            <button class="nav-toggle" id="nav-toggle">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Product Header / Breadcrumb -->
+    <div class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html">Inicio</a> / <a href="#">Productos</a> / <a href="#">L-3</a> / <span>ProVision</span>
+            </div>
+            <h2 class="page-title">Detalle de Producto</h2>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container" itemscope itemtype="https://schema.org/Product">
+        
+        <section class="product-detail">
+            <!-- Galería -->
+            <div class="product-media">
+                <div class="main-image-container">
+                    <img src="img/producto-provision.jpg" alt="ProVision Escáner" class="main-image" id="mainImage" itemprop="image">
+                </div>
+                <div class="thumbnails">
+                    <!-- Thumbnails con JS para cambiar imagen principal -->
+                    <img src="img/producto-provision.jpg" class="thumb active" onclick="changeImage(this)">
+                    <img src="img/thumb-angle1.jpg" class="thumb" onclick="changeImage(this)"> <!-- Placeholder -->
+                    <img src="img/thumb-angle2.jpg" class="thumb" onclick="changeImage(this)"> <!-- Placeholder -->
+                    <img src="img/thumb-diagram.jpg" class="thumb" onclick="changeImage(this)"> <!-- Placeholder -->
+                </div>
+            </div>
+
+            <!-- Información -->
+            <div class="product-info">
+                <div class="brand-tag">L-3 Communications</div>
+                <h1 itemprop="name">ProVision 2</h1>
+                <p class="intro" itemprop="description">
+                    Solución avanzada de escaneo personal con tecnología de Ondas Milimétricas. Detección automática de amenazas sin comprometer la privacidad.
+                </p>
+
+                <div class="availability">
+                    <span class="stock-indicator"></span>
+                    <span>Disponibilidad: <strong>Bajo Pedido / Consultar</strong></span>
+                </div>
+
+                <div class="cta-group">
+                    <a href="https://wa.me/573001234567" target="_blank" class="btn btn-primary">
+                        <i class="fab fa-whatsapp" style="margin-right:8px;"></i> Cotizar Ahora
+                    </a>
+                    <a href="tel:+5713001287" class="btn btn-secondary">
+                        <i class="fas fa-phone" style="margin-right:8px;"></i> Llamar a Asesor
+                    </a>
+                </div>
+
+                <!-- Tabs -->
+                <div class="tabs-container">
+                    <ul class="tab-list">
+                        <li class="tab active" onclick="openTab(event, 'features')">Características</li>
+                        <li class="tab" onclick="openTab(event, 'specs')">Especificaciones</li>
+                        <li class="tab" onclick="openTab(event, 'faq')">Preguntas Frecuentes</li>
+                    </ul>
+
+                    <div id="features" class="tab-content active">
+                        <ul>
+                            <li><span>Detección Total:</span> Identifica metales, cerámicas, líquidos y plásticos.</li>
+                            <li><span>Seguridad:</span> Ondas milimétricas inofensivas (sin rayos X).</li>
+                            <li><span>Privacidad:</span> Muestra siluetas genéricas, no imágenes anatómicas.</li>
+                            <li><span>Eficiencia:</span> Procesa 200-300 pasajeros por hora. Escaneo en 1.5 seg.</li>
+                        </ul>
+                    </div>
+
+                    <div id="specs" class="tab-content">
+                        <div class="tech-specs">
+                            <dl>
+                                <dt>Dimensiones</dt><dd>2.2m x 1.5m x 1.8m</dd>
+                                <dt>Peso</dt><dd>~500 kg</dd>
+                                <dt>Tecnología</dt><dd>Ondas Milimétricas Activas</dd>
+                                <dt>Consumo</dt><dd>1.2 kW</dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div id="faq" class="tab-content">
+                        <p style="margin-bottom:15px;"><strong>¿Es seguro para la salud?</strong><br>Sí, ProVision utiliza ondas de radio no ionizantes, similares a las de un teléfono móvil, siendo seguro para todos, incluidos marcapasos y mujeres embarazadas.</p>
+                        <p><strong>¿Qué tipo de amenazas detecta?</strong><br>Detecta una amplia gama de amenazas tanto metálicas como no metálicas, incluyendo explosivos líquidos, geles, plásticos y polvos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Productos Relacionados -->
+        <section class="recommended">
+            <h3 class="rec-title">Equipos Relacionados</h3>
+            <div class="products-grid">
+                <article class="product-card">
+                    <img src="img/producto-optex.jpg" alt="Optex">
+                    <h4>Optex Trace</h4>
+                    <a href="#" class="btn btn-secondary" style="width:100%">Ver Detalles</a>
+                </article>
+                <article class="product-card">
+                    <img src="img/producto-px64.jpg" alt="PX 6.4">
+                    <h4>PX 6.4 X-Ray</h4>
+                    <a href="#" class="btn btn-secondary" style="width:100%">Ver Detalles</a>
+                </article>
+                <article class="product-card">
+                    <img src="img/producto-3dx.jpg" alt="Examiner">
+                    <h4>Examiner 3DX</h4>
+                    <a href="#" class="btn btn-secondary" style="width:100%">Ver Detalles</a>
+                </article>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Floating Actions -->
+    <div class="floating-actions">
+        <a href="https://wa.me/573001234567" target="_blank" class="float-btn btn-whatsapp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="tel:+5713001287" class="float-btn btn-call">
+            <i class="fas fa-phone"></i>
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <a href="#" class="logo" style="font-family:'Rajdhani'; font-size:2rem; font-weight:700; color:#fff; text-decoration:none;">API</a>
+                <p style="margin-top:15px; color:var(--steel-light); font-size:0.9rem;">Representantes exclusivos para Colombia de L-3 Communications.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Navegación</h4>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="#">Productos</a></li>
+                    <li><a href="#">Soporte</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contacto</h4>
+                <ul style="color:var(--steel-light); font-size:0.9rem;">
+                    <li style="margin-bottom:10px;"><i class="fas fa-map-marker-alt" style="color:var(--brand-red); margin-right:8px;"></i> Bogotá, Colombia</li>
+                    <li style="margin-bottom:10px;"><i class="fas fa-envelope" style="color:var(--brand-red); margin-right:8px;"></i> info@api-int.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 API Soluciones.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile Menu
+        const navToggle = document.getElementById('nav-toggle');
+        const navMenu = document.getElementById('nav-menu');
+        navToggle.addEventListener('click', () => {
+            if (navMenu.style.display === 'flex') {
+                navMenu.style.display = 'none';
+            } else {
+                navMenu.style.display = 'flex';
+                navMenu.style.flexDirection = 'column';
+                navMenu.style.position = 'absolute';
+                navMenu.style.top = '80px';
+                navMenu.style.left = '0';
+                navMenu.style.width = '100%';
+                navMenu.style.background = '#fff';
+                navMenu.style.padding = '20px';
+                navMenu.style.boxShadow = '0 10px 20px rgba(0,0,0,0.1)';
+            }
+        });
+
+        // Tabs Logic
+        function openTab(evt, tabName) {
+            var i, tabContent, tabLinks;
+            tabContent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabContent.length; i++) {
+                tabContent[i].style.display = "none";
+                tabContent[i].classList.remove('active');
+            }
+            tabLinks = document.getElementsByClassName("tab");
+            for (i = 0; i < tabLinks.length; i++) {
+                tabLinks[i].className = tabLinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            setTimeout(() => document.getElementById(tabName).classList.add('active'), 10);
+            evt.currentTarget.className += " active";
+        }
+
+        // Image Gallery
+        function changeImage(element) {
+            var mainImg = document.getElementById('mainImage');
+            mainImg.src = element.src;
+            
+            var thumbs = document.getElementsByClassName('thumb');
+            for (var i = 0; i < thumbs.length; i++) {
+                thumbs[i].classList.remove('active');
+            }
+            element.classList.add('active');
+        }
+    </script>
+</body>
+</html>
