@@ -13,7 +13,7 @@
 
     <style>
         /* ========================================= */
-        /* 1. CONFIGURACIÓN & VARIABLES (Heredadas) */
+        /* VARIABLES & RESET                         */
         /* ========================================= */
         :root {
             --brand-red: #e30613;       
@@ -43,15 +43,18 @@
         h1, h2, h3, h4, .btn, .nav-link, .tab { font-family: 'Rajdhani', sans-serif; }
         a { text-decoration: none; color: inherit; transition: var(--transition); }
         ul { list-style: none; }
-        img { max-width: 100%; display: block; }
+        img { max-width: 100%; height: auto; display: block; }
 
         .container {
+            width: 100%;
             max-width: var(--container-width);
             margin: 0 auto;
             padding: 0 20px;
         }
 
-        /* Botones Globales */
+        /* ========================================= */
+        /* COMPONENTES UI                            */
+        /* ========================================= */
         .btn {
             display: inline-flex; align-items: center; justify-content: center;
             padding: 12px 28px; font-weight: 700; text-transform: uppercase; 
@@ -72,29 +75,38 @@
         .btn-secondary:hover { border-color: var(--brand-red); color: var(--brand-red); }
 
         /* ========================================= */
-        /* 2. HEADER */
+        /* HEADER (Mobile First)                     */
         /* ========================================= */
-        .site-header {
-            position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
-            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 1000;
-            display: flex; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        .site-header { 
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height); 
+            background: rgba(255,255,255,0.98); backdrop-filter: blur(12px); 
+            border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 1000; 
+            display: flex; align-items: center; 
         }
         .header-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .logo { display: flex; align-items: center; gap: 10px; }
-        .logo img { height: 55px; width: auto; object-fit: contain; }
+        .logo img { height: 50px; width: auto; object-fit: contain; }
         
-        .nav-list { display: none; gap: 2rem; align-items: center; }
-        .nav-link {
-            font-weight: 600; color: var(--steel-blue); font-size: 1.1rem;
-            text-transform: uppercase; position: relative; padding: 5px 0;
+        /* Menú Móvil */
+        .nav-list { 
+            display: none; 
+            position: absolute; top: var(--header-height); left: 0; width: 100%; 
+            background: #fff; flex-direction: column; padding: 20px; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-top: 1px solid #f1f5f9;
         }
-        .nav-link:hover { color: var(--brand-red); }
+        .nav-list.active { display: flex; }
+        
+        .nav-link { 
+            font-weight: 600; color: var(--steel-blue); font-size: 1.1rem; 
+            text-transform: uppercase; padding: 15px 0; border-bottom: 1px solid #f8fafc; display: block;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--brand-red); }
+        
         .nav-toggle { display: flex; flex-direction: column; gap: 6px; cursor: pointer; background: none; border: none; padding: 10px; }
         .nav-toggle span { width: 28px; height: 3px; background: var(--steel-dark); border-radius: 2px; }
 
         /* ========================================= */
-        /* 3. PRODUCT HERO (Breadcrumb style) */
+        /* PRODUCT HERO (Breadcrumb)                 */
         /* ========================================= */
         .page-header {
             background: var(--steel-dark); color: #fff; padding: 40px 0;
@@ -106,45 +118,48 @@
         }
         .breadcrumb { font-size: 0.9rem; color: var(--steel-light); margin-bottom: 10px; }
         .breadcrumb a:hover { color: #fff; }
-        .page-title { font-size: 2.5rem; text-transform: uppercase; margin: 0; }
+        .page-title { font-size: 2.2rem; text-transform: uppercase; margin: 0; line-height: 1.2; }
 
         /* ========================================= */
-        /* 4. PRODUCT DETAIL LAYOUT */
+        /* PRODUCT DETAIL LAYOUT                     */
         /* ========================================= */
         .product-detail {
-            display: grid; grid-template-columns: 1fr; gap: 50px;
+            display: grid; 
+            grid-template-columns: 1fr; /* Mobile: 1 columna */
+            gap: 40px;
             margin-bottom: 80px;
         }
 
         /* --- Columna Izquierda: Galería --- */
-        .product-media { position: relative; }
+        .product-media { position: relative; width: 100%; }
         
         .main-image-container {
-            background: #fff; border-radius: 8px; padding: 40px;
+            background: #fff; border-radius: 8px; padding: 20px;
             border: 1px solid #e2e8f0; box-shadow: var(--shadow-soft);
-            margin-bottom: 20px; display: flex; align-items: center; justify-content: center;
-            height: 400px; position: relative; overflow: hidden;
+            margin-bottom: 15px; display: flex; align-items: center; justify-content: center;
+            min-height: 300px; /* Altura flexible para móviles */
+            position: relative; overflow: hidden;
         }
-        .main-image { max-height: 100%; max-width: 100%; object-fit: contain; transition: transform 0.5s; }
+        .main-image { max-height: 350px; width: auto; max-width: 100%; object-fit: contain; transition: transform 0.5s; }
         .main-image:hover { transform: scale(1.05); }
 
-        .thumbnails { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        .thumbnails { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
         .thumb {
             background: #fff; border: 2px solid transparent; border-radius: 4px;
-            cursor: pointer; padding: 5px; height: 80px; width: 100%; object-fit: contain;
+            cursor: pointer; padding: 5px; height: 60px; width: 100%; object-fit: contain;
             transition: var(--transition);
         }
         .thumb:hover, .thumb.active { border-color: var(--brand-red); }
 
         /* --- Columna Derecha: Info --- */
-        .product-info h1 { font-size: 3rem; line-height: 1.1; margin-bottom: 10px; color: var(--steel-dark); }
+        .product-info h1 { font-size: 2.2rem; line-height: 1.1; margin-bottom: 10px; color: var(--steel-dark); }
         .brand-tag {
             display: inline-block; background: #eff6ff; color: var(--steel-blue);
             padding: 4px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: 700;
             text-transform: uppercase; margin-bottom: 20px; border: 1px solid #dbeafe;
         }
         
-        .intro { font-size: 1.1rem; color: var(--steel-light); margin-bottom: 30px; border-left: 4px solid var(--brand-red); padding-left: 20px; }
+        .intro { font-size: 1rem; color: var(--steel-light); margin-bottom: 30px; border-left: 4px solid var(--brand-red); padding-left: 20px; }
         
         .availability {
             margin: 20px 0; font-size: 0.9rem; color: var(--steel-blue);
@@ -155,18 +170,22 @@
             box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2);
         }
 
-        .cta-group { display: flex; gap: 15px; margin-bottom: 40px; }
+        .cta-group { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
+        @media (min-width: 768px) { .cta-group { flex-direction: row; } }
 
         /* --- TABS SYSTEM --- */
         .tabs-container { margin-top: 40px; }
         
         .tab-list {
             display: flex; border-bottom: 2px solid #e2e8f0; margin-bottom: 30px; overflow-x: auto;
+            white-space: nowrap; /* Evita que las tabs se rompan en líneas en móvil */
+            -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+            padding-bottom: 5px; /* Espacio para scrollbar */
         }
         .tab {
-            padding: 10px 25px; cursor: pointer; font-weight: 700; color: var(--steel-light);
+            padding: 10px 20px; cursor: pointer; font-weight: 700; color: var(--steel-light);
             text-transform: uppercase; border-bottom: 2px solid transparent; margin-bottom: -2px;
-            white-space: nowrap; transition: var(--transition);
+            transition: var(--transition); font-size: 0.9rem;
         }
         .tab:hover { color: var(--steel-dark); }
         .tab.active { color: var(--brand-red); border-bottom-color: var(--brand-red); }
@@ -178,17 +197,25 @@
         .tab-content li { margin-bottom: 10px; list-style-type: square; color: var(--brand-red); }
         .tab-content li span { color: var(--steel-dark); }
         
-        .tech-specs dl { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .tech-specs dl { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        @media (min-width: 500px) { .tech-specs dl { grid-template-columns: 1fr 1fr; } }
+        
         .tech-specs dt { font-weight: 700; color: var(--steel-dark); }
         .tech-specs dd { color: var(--steel-light); margin: 0; }
 
         /* ========================================= */
-        /* 5. RELATED PRODUCTS */
+        /* RELATED PRODUCTS                          */
         /* ========================================= */
         .recommended { background: #fff; padding: 60px 0; border-top: 1px solid #f1f5f9; }
         .rec-title { font-size: 1.8rem; margin-bottom: 30px; color: var(--steel-dark); }
         
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        /* Grilla flexible Mobile First CORREGIDA */
+        .products-grid { 
+            display: grid; 
+            /* Se ajusta minmax a 220px para asegurar que quepan en móviles estrechos */
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+            gap: 30px; 
+        }
         
         .product-card {
             background: #fff; border: 1px solid #f1f5f9; border-radius: 8px;
@@ -199,29 +226,53 @@
         .product-card h4 { font-size: 1.2rem; margin-bottom: 10px; }
 
         /* ========================================= */
-        /* 6. FOOTER & FLOATING */
+        /* FOOTER & FLOATING                         */
         /* ========================================= */
         .site-footer {
-            background: var(--steel-dark); color: #fff; padding: 80px 0 30px;
+            background: var(--steel-dark); color: #fff; padding: 60px 0 30px;
             border-top: 5px solid var(--brand-red); margin-top: 0;
         }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; }
+        .footer-grid { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        @media (min-width: 768px) { .footer-grid { grid-template-columns: repeat(3, 1fr); } }
+        
         .footer-col h4 { color: #fff; margin-bottom: 20px; border-left: 3px solid var(--brand-red); padding-left: 10px; }
         .footer-col a { color: var(--steel-light); } .footer-col a:hover { color: var(--brand-red); }
         .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; color: var(--steel-light); }
 
-        .floating-actions { position: fixed; bottom: 30px; right: 30px; z-index: 2000; display: flex; flex-direction: column; gap: 15px; }
+        .floating-actions { position: fixed; bottom: 20px; right: 20px; z-index: 2000; display: flex; flex-direction: column; gap: 10px; }
         .float-btn {
-            width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            color: #fff; font-size: 1.5rem; box-shadow: 0 5px 20px rgba(0,0,0,0.3); transition: transform 0.3s;
+            width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 1.3rem; box-shadow: 0 5px 20px rgba(0,0,0,0.3); transition: transform 0.3s;
         }
         .float-btn:hover { transform: scale(1.1); }
         .btn-whatsapp { background: #25D366; } .btn-call { background: var(--brand-red); animation: pulse 2s infinite; }
 
+        /* ========================================= */
+        /* MEDIA QUERIES (Desktop)                   */
+        /* ========================================= */
         @media (min-width: 992px) {
-            .nav-list { display: flex; } .nav-toggle { display: none; }
-            .product-detail { grid-template-columns: 1fr 1fr; }
+            /* Header Desktop */
+            .nav-list { 
+                display: flex; position: static; flex-direction: row; 
+                width: auto; padding: 0; background: transparent; 
+                box-shadow: none; border: none; gap: 2rem;
+            }
+            .nav-link { padding: 5px 0; border: none; font-size: 1rem; }
+            .nav-toggle { display: none; }
+
+            /* Layout Desktop */
+            .page-title { font-size: 3rem; }
+            .product-detail { grid-template-columns: 1fr 1fr; gap: 60px; }
+            
+            .main-image-container { height: 400px; padding: 40px; }
+            .thumbnails { gap: 15px; }
+            .thumb { height: 80px; }
+            
+            .product-info h1 { font-size: 3rem; }
+            
+            .float-btn { width: 60px; height: 60px; font-size: 1.5rem; }
         }
+
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(227, 6, 19, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(227, 6, 19, 0); } 100% { box-shadow: 0 0 0 0 rgba(227, 6, 19, 0); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -241,10 +292,10 @@
                     <li><a href="nosotros.html" class="nav-link">Nosotros</a></li>
                     <li><a href="l3.html" class="nav-link">L-3 Solutions</a></li>
                     <li><a href="cellcrypt.html" class="nav-link">Cellcrypt</a></li>
-                    <li><a href="#" class="btn btn-primary" style="padding: 8px 20px; font-size:0.9rem;">Contacto</a></li>
+                    <li><a href="contacto.html" class="btn btn-primary" style="padding: 8px 20px; font-size:0.9rem;">Contacto</a></li>
                 </ul>
             </nav>
-            <button class="nav-toggle" id="nav-toggle">
+            <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú">
                 <span></span><span></span><span></span>
             </button>
         </div>
@@ -254,7 +305,7 @@
     <div class="page-header">
         <div class="container">
             <div class="breadcrumb">
-                <a href="index.html">Inicio</a> / <a href="#">Productos</a> / <a href="#">L-3</a> / <span>ProVision</span>
+                <a href="index.html">Inicio</a> / <a href="#">Productos</a> / <a href="l3.html">L-3</a> / <span>ProVision</span>
             </div>
             <h2 class="page-title">Detalle de Producto</h2>
         </div>
@@ -381,8 +432,8 @@
                 <h4>Navegación</h4>
                 <ul>
                     <li><a href="index.html">Inicio</a></li>
-                    <li><a href="#">Productos</a></li>
-                    <li><a href="#">Soporte</a></li>
+                    <li><a href="l3.html">Productos</a></li>
+                    <li><a href="contacto.html">Soporte</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -394,7 +445,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 API Soluciones.</p>
+            <p>&copy; 2025 API Soluciones. Diseño: <span style="color:var(--brand-red);">Fabian Barrero</span>.</p>
         </div>
     </footer>
 
@@ -403,20 +454,9 @@
         // Mobile Menu
         const navToggle = document.getElementById('nav-toggle');
         const navMenu = document.getElementById('nav-menu');
+        
         navToggle.addEventListener('click', () => {
-            if (navMenu.style.display === 'flex') {
-                navMenu.style.display = 'none';
-            } else {
-                navMenu.style.display = 'flex';
-                navMenu.style.flexDirection = 'column';
-                navMenu.style.position = 'absolute';
-                navMenu.style.top = '80px';
-                navMenu.style.left = '0';
-                navMenu.style.width = '100%';
-                navMenu.style.background = '#fff';
-                navMenu.style.padding = '20px';
-                navMenu.style.boxShadow = '0 10px 20px rgba(0,0,0,0.1)';
-            }
+            navMenu.classList.toggle('active');
         });
 
         // Tabs Logic
